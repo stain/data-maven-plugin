@@ -22,7 +22,8 @@
 	<packaging>maven-plugin</packaging>
 
 	<name>Data Maven Plugin</name>
-
+	
+	<inceptionYear>2015</inceptionYear>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -35,6 +36,12 @@
 			<version>2.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-core</artifactId>
+			<version>3.0</version>
+			<scope>provided</scope>
+		</dependency>			
+		<dependency>
 			<groupId>org.apache.maven.plugin-tools</groupId>
 			<artifactId>maven-plugin-annotations</artifactId>
 			<version>3.2</version>
@@ -43,15 +50,17 @@
 		<dependency>
 			<groupId>org.codehaus.plexus</groupId>
 			<artifactId>plexus-utils</artifactId>
-			<version>3.0.8</version>
+			<version>3.0.22</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	
 
 	<build>
 		<plugins>
@@ -60,7 +69,7 @@
 				<artifactId>maven-plugin-plugin</artifactId>
 				<version>3.4</version>
 				<configuration>
-					<goalPrefix>data-maven-plugin</goalPrefix>
+					<goalPrefix>data</goalPrefix>
 					<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
 				</configuration>
 				<executions>
@@ -89,7 +98,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-invoker-plugin</artifactId>
-						<version>1.7</version>
+						<version>1.10</version>
 						<configuration>
 							<debug>true</debug>
 							<cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
@@ -120,4 +129,27 @@
 			</build>
 		</profile>
 	</profiles>
+ <repositories>
+    <repository>
+      <id>ops</id>
+      <name>Open PHACTS repository</name>
+      <url>http://repository.mygrid.org.uk/artifactory/ops/</url>
+      <releases />
+      <snapshots />
+    </repository>
+  </repositories>
+
+  <distributionManagement>
+    <repository>
+      <id>ops</id>
+      <name>Open PHACTS repository</name>
+      <url>http://repository.mygrid.org.uk/artifactory/ops/</url>
+    </repository>
+    <snapshotRepository>
+      <id>ops</id>
+      <name>Open PHACTS repository</name>
+      <url>http://repository.mygrid.org.uk/artifactory/ops/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
 </project>
