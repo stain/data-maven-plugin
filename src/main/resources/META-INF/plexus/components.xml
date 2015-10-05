@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component-set
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+	<components>
+		<component>
+			<role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+			<role-hint>data</role-hint>
+			<implementation>
+				org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
+			</implementation>
+			<configuration>
+				<phases>
+					<initialize>
+						no.s11.dataplugin:data-maven-plugin:add
+					</initialize>
+					<!-- 
+					<genererate-resources>
+					</genererate-resources>
+					 -->
+					<process-resources>
+						org.apache.maven.plugins:maven-resources-plugin:resources
+					</process-resources>
+
+					<!-- no compile -->
+
+					<!-- regular test phases -->
+					
+					<process-test-resources>
+						org.apache.maven.plugins:maven-resources-plugin:testResources
+					</process-test-resources>
+					<test-compile>
+						org.apache.maven.plugins:maven-compiler-plugin:testCompile
+					</test-compile>
+					<test>
+						org.apache.maven.plugins:maven-surefire-plugin:test
+					</test>
+
+					<!-- regular package/install/deploy -->
+					<package>
+						org.apache.maven.plugins:maven-jar-plugin:jar
+					</package>
+					<install>
+						org.apache.maven.plugins:maven-install-plugin:install
+					</install>
+					<deploy>
+						org.apache.maven.plugins:maven-deploy-plugin:deploy
+					</deploy>
+
+				</phases>
+			</configuration>
+		</component>
+		<component>
+			<role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+			<role-hint>data</role-hint>
+			<implementation>
+				org.apache.maven.artifact.handler.DefaultArtifactHandler
+			</implementation>
+			<configuration>
+				<type>data</type>
+				<extension>bundle.zip</extension>
+				<packaging>data</packaging>
+				<addedToClasspath>true</addedToClasspath>
+				<includesDependencies>true</includesDependencies>
+			</configuration>
+		</component>
+	</components>
+</component-set>
