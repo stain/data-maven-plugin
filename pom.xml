@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
+
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
@@ -57,6 +58,11 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.taverna.language</groupId>
+			<artifactId>taverna-robundle</artifactId>
+			<version>0.15.0-incubating</version>
 		</dependency>
 	</dependencies>
 
@@ -121,7 +127,7 @@
 	</build>
 	<profiles>
 		<profile>
-			<id>run-its</id>
+			<id>integration</id>
 			<build>
 
 				<plugins>
