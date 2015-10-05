@@ -21,7 +21,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -78,8 +80,20 @@ public class ArchiveMojo extends AbstractMojo {
 		} catch (IOException e) {
 			throw new MojoExecutionException("Can't write to " + researchObject + ": " + e.getMessage(), e);
 		}
+		// TODO: Don't steal jar if <packaging> is not data
 		project.getArtifact().setFile(researchObject);
+		
+		
+		
+		Resource testResource = new Resource();
+		testResource.setTargetPath(targetPath);
+		testResource.setDirectory(dataDirectory.getAbsolutePath());
+		project.addTestResource(testResource);
 
+		Resource testResource2 = new Resource();
+		testResource2.setTargetPath(targetPath);
+		testResource2.setDirectory(buildOutput.getAbsolutePath());
+		project.addTestResource(testResource2);
 	}
 
 	private void archive(File fromDir, Path toDir) throws IOException {
