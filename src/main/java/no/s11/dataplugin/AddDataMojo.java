@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openphacts.data_maven_plugin;
+package no.s11.dataplugin;
 
 import java.io.File;
 
@@ -30,7 +30,7 @@ import org.apache.maven.project.MavenProject;
  * Mojo for adding data/ resources
  *
  */
-@Mojo(name = "add", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
+@Mojo(name = "add", defaultPhase = LifecyclePhase.INITIALIZE)
 public class AddDataMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project.build.directory}", property = "outputDir", required = true)
 	private File outputDirectory;
