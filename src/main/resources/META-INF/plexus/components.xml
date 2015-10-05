@@ -27,9 +27,11 @@
 			</implementation>
 			<configuration>
 				<phases>
+				<!-- 
 					<initialize>
 						no.s11.dataplugin:data-maven-plugin:add
 					</initialize>
+				 -->
 					<!-- 
 					<genererate-resources>
 					</genererate-resources>
@@ -41,8 +43,9 @@
 					<compile>
 						no.s11.dataplugin:data-maven-plugin:archive
 					</compile>
-					<!-- regular test phases -->
-					
+ 
+ 
+					<!-- regular test phases -->					
 					<process-test-resources>
 						org.apache.maven.plugins:maven-resources-plugin:testResources
 					</process-test-resources>
@@ -53,10 +56,10 @@
 						org.apache.maven.plugins:maven-surefire-plugin:test
 					</test>
 
+					<!--  empty <package> - we did it in <compile> -->
+
 					<!-- regular package/install/deploy -->
-					<package>
-						org.apache.maven.plugins:maven-jar-plugin:jar
-					</package>
+					
 					<install>
 						org.apache.maven.plugins:maven-install-plugin:install
 					</install>
