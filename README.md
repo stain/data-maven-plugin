@@ -9,12 +9,12 @@ This plugin adds support for making a Maven project with
 `<packaging>data</packaging>`, where resources within its
 `data/` folder are directly added to the output, a `.bundle.zip` file.
 
-The output is a valid
-[Research Object bundle](https://w3id.org/bundle), a specialization of zip
+The archive is a valid
+[Research Object bundle](https://w3id.org/bundle), a specialization of ZIP
 that adds a manifest for provenance and annotations.
 
-The archive is deployed as `<type>bundle.zip</type>`, meaning it can be used
-as a ``<dependency>` in other Maven projects.
+The archive artifact is deployed as a `bundle.zip`, meaning it can be used
+as a `<dependency>` in other Maven projects.
 
 Using this plugin for data publishing mean you benefit from the Maven
 ecosystem of plugins for your data preparation and release process,
@@ -23,6 +23,7 @@ e.g. unit testing, sha1 checksums, Maven repositories and reproducible builds.
 Further development of this plugin aims to capture provenance
 (e.g. for downloaded and generated data files) and to propagate attributions
 and annotations from upstream data sources.
+
 
 
 ## Usage
@@ -42,8 +43,8 @@ to include `<packaging>` and `<plugin>` as below:
 	<modelVersion>4.0.0</modelVersion>
 
   <groupId>com.example.data</groupId>
-	<artifactId>example-data</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+  <artifactId>example-data</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
   <packaging>data</packaging>
 
     <build>
@@ -59,17 +60,33 @@ to include `<packaging>` and `<plugin>` as below:
 </project>
 ```
 
-Build the data project with `mvn clean package`.  
-Install with `mvn clean install`, which will add the `bundle.zip`
+Build the data project with `mvn clean package`, or install with `mvn clean install`, which will add the `bundle.zip`
 archive artifact to your local Maven repository.
+
+## License
+
+[Apache License, version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+(c) 2015 University of Manchester
+
+Author: [Stian Soiland-Reyes](http://orcid.org/0000-0001-9842-9718)
+
+
+## Contribute
+
+Feel free to contribute [pull requests](https://github.com/stain/data-maven-plugin/pulls),
+or raise an [issue](https://github.com/stain/data-maven-plugin/issues) for any
+questions or bugs.
+
+
 
 
 ## Using data archives
 
-One big reason for creating data archives with Maven is that you can use existing
-infrastructure and Maven support, e.g. deploy the archive to a
+One great advantage when creating data archives with Maven is that you can use existing
+Maven support and infrastructure, e.g. deploy the archive to an
 [Artifactory](https://www.jfrog.com/open-source/) Maven repository, and
-at the same time getting the benefits for your data that has already proved
+at the same time get the benefits for your data that has already proved
 useful for software, like:
 
 * Checksums on download (Maven uses md5 and sha1)
@@ -77,22 +94,26 @@ useful for software, like:
 * Mirroring (e.g. Artifactory can publish to [Bintray](https://bintray.com/)
 * [Semantic Versioning](http://semver.org/)
 * Reproducible data builds with a `pom.xml`
+* Release process with [Maven Release plugin](http://maven.apache.org/maven-release/maven-release-plugin/)
 * Dependencies (data and software)
+* Unit testing of data
 
 
 ### As dependency
 
 Once a data archive has been installed or deployed to a Maven repository,
-other Maven projects can use it as:
+other Maven projects can use it as a `<dependency>`:
 
 ```xml
 <dependency>
   <groupId>com.example.data</groupId>
-	<artifactId>example-data</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+  <artifactId>example-data</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
   <type>data.zip</type>
 </dependency>
 ```
+
+(A `<repository>` setting might also be needed.)
 
 The archived data should then be available as `data/example-data/`
 on the project's classpath. You do not need to have the `data-maven-plugin`
@@ -110,14 +131,22 @@ decompression tools like [unzip](http://www.info-zip.org/UnZip.html),
 ### Extracting on OS X
 
 Note that the built-in OS X support for ZIP files (Archive Utilllity)
-has a bug in that it detects the `mimetype` value of `application/vnd.wf4ever.robundle+zip` -
-believes the archive is not a ZIP file, and then tries to compress the file
-(making a `bundle.zip.zip` file) instead of decompressing it.  To work around
+has a bug in that it detects the `mimetype` value of `application/vnd.wf4ever.robundle+zip`
+and believe that the the archive is not a ZIP file, and therefore tries to compress the
+ZIP file instead of decompressing it.  To work around
 this, either `unzip` in a Terminal session, or open the `.bundle.zip` file
 with an alternative tool like [StuffIt Expander](http://my.smithmicro.com/stuffit-expander-mac.html)
 
 
 ## Creating data archives
+
+Data archives should be created as separate Maven projects or modules that
+only contain and prepare the data. These projects should be of the type
+`<packaging>data</packaging>`, which requires `<extensions>true</extensions>`
+when listing the `data-maven-plugin`.
+
+It is possible, but not recommended, to use the `data:archive` goal from
+within regular `jar` projects.
 
 ### Data folders
 
@@ -146,24 +175,25 @@ This goal can also be used manually from normal Java projects.
 The archived resources will be added under
 the target path
 `data/${project.artifactId}/` within the ZIP file,
-(e.g. the file `data/bigfile.csv`  in the `example-data` project
-will be archived as `data/example-data/bigfile.csv`),
-meaning that multiple data ZIP files can be on the classpath concurrently as long
-as their `artifactId`s are unique.
+(e.g. `data/bigfile.csv` in the _example-data_ project
+archived as `data/example-data/bigfile.csv`).
+
+This means that that multiple data ZIP files can be on the classpath
+concurrently as long as their `artifactId`s are unique, which is
+best practice for Maven artifacts.
 
 Note that files from `src/main/resources` and friends are also added to this
-targetPath folder.
+target path instead of at the root.
 
 The only files outside this data folder are the [Research Object Bundle](https://w3id.org/bundle)
-metadata, which are added to the files `mimetype` and `.ro/manifest.json` and
-any other files under `.ro/`.
+metadata, which include the files `mimetype` and `.ro/manifest.json`.
 
 
 
 ### Configuration
 
 This example shows the default configuration for the plugin. To customize,
-add a overriding `<configuration>`` to your `<plugin>` section with
+add a overriding `<configuration>` to your data project's `<plugin>` section with
 the properties you need to change.
 
 ```xml
@@ -177,22 +207,5 @@ the properties you need to change.
 - `<researchObject>` is the artifact filename that will be generated, e.g.
   `target/example-data-0.0.3-SNAPSHOT.bundle.zip`
 - `<dataDirectory>` is the data directory to add, by default `data/`
-- `<targetPath>` is the folder within the ZIP archive to add data
-   files to, e.g. `target/`
-
-
-
-## License
-
-[Apache License, version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
-
-(c) 2015 University of Manchester
-
-Author: [Stian Soiland-Reyes](http://orcid.org/0000-0001-9842-9718)
-
-
-## Contribute
-
-Feel free to contribute [pull requests](https://github.com/stain/data-maven-plugin/pulls),
-or raise an [issue](https://github.com/stain/data-maven-plugin/issues) for any
-questions or bugs.
+- `<targetPath>` is the folder path within the ZIP archive where data
+   is stored, e.g. `data/example-data/`. Use `/` to add to the root.
