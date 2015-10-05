@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.apache.maven.archiver.MavenArchiver;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -29,6 +30,9 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.taverna.robundle.Bundle;
 import org.apache.taverna.robundle.Bundles;
+import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.archiver.ResourceIterator;
+import org.codehaus.plexus.archiver.jar.JarArchiver;
 
 /**
  * Mojo for archiving data as a Research Object
@@ -57,14 +61,14 @@ public class ArchiveMojo extends AbstractMojo {
 	public void execute() throws MojoExecutionException {
 		getLog().info("Archiving as Research Object");
 		Bundle bundle = openBundle();
-		
+
 		try {
 			bundle.close();
 		} catch (IOException e) {
 			throw new MojoExecutionException("Can't write researchObject " + researchObject, e);
 		}
 		project.getArtifact().setFile(researchObject);
-		
+
 	}
 
 	private Bundle openBundle() throws MojoExecutionException {
@@ -73,6 +77,28 @@ public class ArchiveMojo extends AbstractMojo {
 			if (Files.exists(bundlePath)) {
 				return Bundles.openBundle(bundlePath);
 			}
+
+			MavenArchiver archiver = new MavenArchiver();
+			// Evil hack as MavenArchiver expects class JarArchiver
+			// rather than an interface
+			JarArchiver bundleArchiver = new JarArchiver() {
+				@Override
+				protected void execute() throws ArchiverException, IOException {
+					final JarArchiver original = this;
+					ResearchObjectArchiver roArchiver = new ResearchObjectArchiver() {					
+						public org.codehaus.plexus.archiver.ResourceIterator getResources() throws ArchiverException {
+							return original.getResources();  
+						};
+						@Override
+						public File getDestFile() {
+							return researchObject;
+						}
+					};
+					roArchiver.createArchive();
+				}
+			};
+			archiver.setArchiver(bundleArchiver);
+
 			return Bundles.createBundle(bundlePath);
 		} catch (IOException e) {
 			throw new MojoExecutionException("Can't open researchObject " + researchObject, e);
