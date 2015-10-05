@@ -77,7 +77,7 @@
 				org.apache.maven.artifact.handler.DefaultArtifactHandler
 			</implementation>
 			<configuration>
-				<type>data</type>
+				<type>data.zip</type>
 				<extension>data.zip</extension>
 				<packaging>data</packaging>
 				<addedToClasspath>true</addedToClasspath>
