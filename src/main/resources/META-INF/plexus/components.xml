@@ -58,7 +58,7 @@
 			</implementation>
 			<configuration>
 				<type>data</type>
-				<extension>bundle.zip</extension>
+				<extension>data.zip</extension>
 				<packaging>data</packaging>
 				<addedToClasspath>true</addedToClasspath>
 				<includesDependencies>true</includesDependencies>
