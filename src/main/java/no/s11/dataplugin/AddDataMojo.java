@@ -38,7 +38,7 @@ public class AddDataMojo extends AbstractMojo {
 	@Parameter(defaultValue = "data", property="dataDir", required=true)
 	private File dataDirectory;
 
-	@Parameter(defaultValue="data", property="targetPath", required=true)
+	@Parameter(defaultValue="data/${project.artifactId}/", property="targetPath", required=true)
 	private String targetPath;
 
     @Parameter( defaultValue = "${session}", readonly = true )
@@ -50,10 +50,10 @@ public class AddDataMojo extends AbstractMojo {
 
 	public void execute() throws MojoExecutionException {
 		if (! dataDirectory.isDirectory()) {
-			getLog().debug("Not a directory: " + dataDirectory);
+			getLog().debug("Not a directory: " + dataDirectory );
 			return;
 		}
-		getLog().info("Adding data from: " + dataDirectory);
+		getLog().info("Will include data from: " + dataDirectory);
 		Resource resource = new Resource();
 		resource.setDirectory(dataDirectory.getPath());
 		resource.setTargetPath(targetPath);
