@@ -21,48 +21,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
-import org.apache.maven.execution.MavenSession;
-import org.apache.maven.model.Resource;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
 import org.apache.taverna.robundle.Bundle;
 import org.apache.taverna.robundle.Bundles;
 
 /**
  * Mojo for archiving data as a Research Object
  */
-@Mojo(name = "archive", defaultPhase = LifecyclePhase.PACKAGE)
-public class ArchiveMojo extends AbstractMojo {
-
-	@Parameter(defaultValue = "${project.build.outputDirectory}", required = true)
-	private File buildOutput;
-
-	@Parameter(defaultValue = "${project.build.directory}/${project.build.finalName}.bundle.zip", property = "researchObject", required = true)
-	private File researchObject;
-
-	@Parameter(defaultValue = "data", property = "dataDirectory", required = true)
-	private File dataDirectory;
-
-	@Parameter(defaultValue = "data/${project.artifactId}", property = "targetPath", required = true)
-	private String targetPath;
-
-	@Parameter(defaultValue = "${session}", readonly = true)
-	private MavenSession session;
-
-	@Parameter(defaultValue = "${project}", readonly = true)
-	private MavenProject project;
-
+@Mojo(name = "archive", defaultPhase = LifecyclePhase.COMPILE)
+public class ArchiveMojo extends AbstractConfiguredMojo {
 
 	private Bundle openBundle() throws IOException {
 		Path bundlePath = researchObject.toPath();
 		if (Files.exists(bundlePath)) {
 			return Bundles.openBundle(bundlePath);
 		}
+		Files.createDirectories(bundlePath.getParent());
 		return Bundles.createBundle(bundlePath);
 	}
 	
@@ -73,27 +49,15 @@ public class ArchiveMojo extends AbstractMojo {
 			Files.createDirectories(toDir);
 			
 			archive(dataDirectory, toDir);
-			archive(buildOutput, toDir);
+			archive(new File(buildOutput, "data"), toDir);
 			
 			// TODO: Downloads?
 			
 		} catch (IOException e) {
 			throw new MojoExecutionException("Can't write to " + researchObject + ": " + e.getMessage(), e);
 		}
-		// TODO: Don't steal jar if <packaging> is not data
-		project.getArtifact().setFile(researchObject);
+		projectHelper.attachArtifact(project, "data.zip", researchObject);
 		
-		
-		
-		Resource testResource = new Resource();
-		testResource.setTargetPath(targetPath);
-		testResource.setDirectory(dataDirectory.getAbsolutePath());
-		project.addTestResource(testResource);
-
-		Resource testResource2 = new Resource();
-		testResource2.setTargetPath(targetPath);
-		testResource2.setDirectory(buildOutput.getAbsolutePath());
-		project.addTestResource(testResource2);
 	}
 
 	private void archive(File fromDir, Path toDir) throws IOException {
