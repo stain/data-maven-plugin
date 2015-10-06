@@ -18,20 +18,19 @@
 <component-set
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
                              http://maven.apache.org/maven-v4_0_0.xsd">
-	<components>
-		<component>
+	<components>		
+		<component>		
 			<role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
-			<role-hint>data</role-hint>
+			<role-hint>data</role-hint>			
 			<implementation>
 				org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
 			</implementation>
 			<configuration>
 				<phases>
-				<!-- 
 					<initialize>
-						no.s11.dataplugin:data-maven-plugin:add
+						no.s11.dataplugin:data-maven-plugin:dataInit
 					</initialize>
-				 -->
+					
 					<!-- 
 					<genererate-resources>
 					</genererate-resources>
