@@ -15,48 +15,28 @@
  */
 package no.s11.dataplugin;
 
-import java.io.File;
-
-import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
 
 /**
  * Mojo for adding data/ resources
  *
  */
 @Mojo(name = "add", defaultPhase = LifecyclePhase.INITIALIZE)
-public class AddDataMojo extends AbstractMojo {
-	@Parameter(defaultValue = "${project.build.directory}", property = "outputDir", required = true)
-	private File outputDirectory;
-
-	@Parameter(defaultValue = "data", property="dataDir", required=true)
-	private File dataDirectory;
-
-	@Parameter(defaultValue="data/${project.artifactId}/", property="targetPath", required=true)
-	private String targetPath;
-
-    @Parameter( defaultValue = "${session}", readonly = true )
-    private MavenSession session;
-
-    @Parameter( defaultValue = "${project}", readonly = true )
-    private MavenProject project;
-
+public class AddDataMojo extends AbstractConfiguredMojo {
 
 	public void execute() throws MojoExecutionException {
 		if (! dataDirectory.isDirectory()) {
 			getLog().debug("Not a directory: " + dataDirectory );
 			return;
 		}
-		getLog().info("Will include data from: " + dataDirectory);
+		getLog().info("Including data from: " + dataDirectory + " as " + targetPath);
 		Resource resource = new Resource();
 		resource.setDirectory(dataDirectory.getPath());
 		resource.setTargetPath(targetPath);
 		project.addResource(resource);
+		
 	}
 }
