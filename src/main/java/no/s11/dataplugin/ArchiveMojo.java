@@ -28,13 +28,13 @@ import org.apache.taverna.robundle.Bundle;
 import org.apache.taverna.robundle.Bundles;
 
 /**
- * Mojo for archiving data as a Research Object
+ * Mojo for archiving data
  */
 @Mojo(name = "archive", defaultPhase = LifecyclePhase.COMPILE)
 public class ArchiveMojo extends AbstractConfiguredMojo {
 
 	private Bundle openBundle() throws IOException {
-		Path bundlePath = researchObject.toPath();
+		Path bundlePath = dataArchive.toPath();
 		if (Files.exists(bundlePath)) {
 			return Bundles.openBundle(bundlePath);
 		}
@@ -43,7 +43,7 @@ public class ArchiveMojo extends AbstractConfiguredMojo {
 	}
 	
 	public void execute() throws MojoExecutionException {
-		getLog().info("Archiving as Research Object");
+		getLog().info("Archiving data");
 		try (Bundle bundle = openBundle()) {
 			Path toDir = bundle.getPath(targetPath);
 			Files.createDirectories(toDir);
@@ -54,9 +54,10 @@ public class ArchiveMojo extends AbstractConfiguredMojo {
 			// TODO: Downloads?
 			
 		} catch (IOException e) {
-			throw new MojoExecutionException("Can't write to " + researchObject + ": " + e.getMessage(), e);
+			throw new MojoExecutionException("Can't write to " + dataArchive + ": " + e.getMessage(), e);
 		}
-		projectHelper.attachArtifact(project, "data.zip", researchObject);
+		projectHelper.attachArtifact(project, "data.zip", dataArchive);
+		getLog().info("Archived to " + dataArchive);
 		
 	}
 

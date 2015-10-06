@@ -17,8 +17,8 @@ public abstract class AbstractConfiguredMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project.build.outputDirectory}", required = true)
 	protected File buildOutput;
 
-	@Parameter(defaultValue = "${project.build.directory}/${project.build.finalName}.data.zip", property = "researchObject", required = true)
-	protected File researchObject;
+	@Parameter(defaultValue = "${project.build.directory}/${project.build.finalName}.data.zip", property = "dataArchive", required = true)
+	protected File dataArchive;
 
 	@Parameter(defaultValue = "data", property = "dataDirectory", required = true)
 	protected File dataDirectory;

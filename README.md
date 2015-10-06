@@ -7,13 +7,13 @@ generating data archives.
 
 This plugin adds support for making a Maven project with
 `<packaging>data</packaging>`, where resources within its
-`data/` folder are directly added to the output, a `.bundle.zip` file.
+`data/` folder are directly added to the output, a `.data.zip` file.
 
 The archive is a valid
 [Research Object bundle](https://w3id.org/bundle), a specialization of ZIP
 that adds a manifest for provenance and annotations.
 
-The archive artifact is deployed as a `bundle.zip`, meaning it can be used
+The archive artifact is deployed as a `data.zip`, meaning it can be used
 as a `<dependency>` in other Maven projects.
 
 Using this plugin for data publishing mean you benefit from the Maven
@@ -60,7 +60,7 @@ to include `<packaging>` and `<plugin>` as below:
 </project>
 ```
 
-Build the data project with `mvn clean package`, or install with `mvn clean install`, which will add the `bundle.zip`
+Build the data project with `mvn clean package`, or install with `mvn clean install`, which will add the `data.zip`
 archive artifact to your local Maven repository.
 
 ## License
@@ -134,7 +134,7 @@ Note that the built-in OS X support for ZIP files (Archive Utilllity)
 has a bug in that it detects the `mimetype` value of `application/vnd.wf4ever.robundle+zip`
 and believe that the the archive is not a ZIP file, and therefore tries to compress the
 ZIP file instead of decompressing it.  To work around
-this, either `unzip` in a Terminal session, or open the `.bundle.zip` file
+this, either `unzip` in a Terminal session, or open the `.data.zip` file
 with an alternative tool like [StuffIt Expander](http://my.smithmicro.com/stuffit-expander-mac.html)
 
 
@@ -155,15 +155,15 @@ should be archived. These files will be copied directly to the archive, bypassin
 `target/classes`. Archiving supports large files (e.g. > 2 GiB) provided
 sufficient disk space is available.
 
-Resources from `src/main/resources` are also added to the archive, as the plugin
-also adds the content of `target/classes`. This means this plugin can
+Resources from `src/main/resources/data` are also added to the archive, as the plugin
+also adds the content of `target/classes/data`. This means this plugin can
 be combined with plugins like [wagon-maven-plugin](http://www.mojohaus.org/wagon-maven-plugin/)
 to archive external and generated resources.
 
 ### Goals
 
 For project of type `data`, the goal `data:archive` is bound to the `compile` stage
-(rather than `package`), meaning that the generated `bundle.zip`
+(rather than `package`), meaning that the generated `data.zip`
 is available for use by the `test` phase.
 
 This goal can also be used manually from normal Java projects.
@@ -182,7 +182,7 @@ This means that that multiple data ZIP files can be on the classpath
 concurrently as long as their `artifactId`s are unique, which is
 best practice for Maven artifacts.
 
-Note that files from `src/main/resources` and friends are also added to this
+Note that files from `src/main/resources/data` and friends are also added to this
 target path instead of at the root.
 
 The only files outside this data folder are the [Research Object Bundle](https://w3id.org/bundle)
@@ -198,14 +198,23 @@ the properties you need to change.
 
 ```xml
 <configuration>
-  <researchObject>${project.build.directory}/${project.build.finalName}.bundle.zip"</researchObject>
+  <dataArchive>${project.build.directory}/${project.build.finalName}.data.zip"</dataArchive>
   <dataDirectory>data</dataDirectory>
   <targetPath>data/${project.artifactId}</targetPath>
 </configuration>
 ```
 
-- `<researchObject>` is the artifact filename that will be generated, e.g.
-  `target/example-data-0.0.3-SNAPSHOT.bundle.zip`
+- `<dataArchive>` is the artifact filename that will be generated, e.g.
+  `target/example-data-0.0.3-SNAPSHOT.data.zip`
 - `<dataDirectory>` is the data directory to add, by default `data/`
 - `<targetPath>` is the folder path within the ZIP archive where data
    is stored, e.g. `data/example-data/`. Use `/` to add to the root.
+
+   
+## Plugin development
+
+To run the [integration tests](src/it), run as
+
+    mvn clean install -Pintegration
+    
+The generated test projects will be under `target/it`.
