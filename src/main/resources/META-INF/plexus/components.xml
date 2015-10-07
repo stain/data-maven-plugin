@@ -27,9 +27,9 @@
 			</implementation>
 			<configuration>
 				<phases>
-					<initialize>
+					<validate>
 						no.s11.dataplugin:data-maven-plugin:dataInit
-					</initialize>
+					</validate>
 					
 					<!-- 
 					<genererate-resources>

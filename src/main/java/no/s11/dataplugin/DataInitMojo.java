@@ -15,9 +15,8 @@
  */
 package no.s11.dataplugin;
 
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.ArtifactUtils;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import java.util.Properties;
+
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -26,31 +25,18 @@ import org.apache.maven.plugins.annotations.Mojo;
  * Mojo for the initialization of <packaging>data</packaging>
  *
  */
-@Mojo(name = "dataInit", defaultPhase = LifecyclePhase.INITIALIZE)
+@Mojo(name = "dataInit", defaultPhase = LifecyclePhase.VALIDATE)
 public class DataInitMojo extends AbstractConfiguredMojo {
-	
+
+	private static final String ADDITIONAL_CLASSPATH = "maven.test.additionalClasspath";
 
 	public void execute() throws MojoExecutionException {
-		
-		try {
-			project.getTestClasspathElements().add(dataArchive.getAbsolutePath());
-		} catch (DependencyResolutionRequiredException e) {
-			throw new MojoExecutionException("Can't add to test classpath: " + dataArchive, e);
+		// Add the dataArchive to test classpath
+		Properties props = project.getProperties();
+		String classpath = dataArchive.getAbsolutePath();
+		if (props.containsKey(ADDITIONAL_CLASSPATH)) {
+			classpath += "," + props.getProperty(ADDITIONAL_CLASSPATH);
 		}
-		
-		System.out.println("Plugins");
-		System.out.println(project.getBuild().getPluginsAsMap().keySet()); 
-		//project.getPlugin(pluginKey)
-		
-		 
-		Artifact testArtifact = ArtifactUtils.copyArtifactSafe(project.getArtifact());
-		testArtifact.setScope(Artifact.SCOPE_TEST);
-		testArtifact.setFile(dataArchive);
-		testArtifact.setResolved(true);
-		testArtifact.selectVersion(project.getVersion());
-		//testArtifact.setType()); ??? not available
-		project.getArtifacts().add(project.getArtifact());
-		
-		
+		props.put(ADDITIONAL_CLASSPATH, classpath);
 	}
 }
