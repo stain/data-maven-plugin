@@ -23,7 +23,7 @@ under the License.
 
 	<groupId>no.s11.dataplugin</groupId>
 	<artifactId>data-maven-plugin</artifactId>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.6-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>Data Maven Plugin</name>
