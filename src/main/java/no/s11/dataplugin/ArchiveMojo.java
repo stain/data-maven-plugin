@@ -49,7 +49,7 @@ public class ArchiveMojo extends AbstractConfiguredMojo {
 			Files.createDirectories(toDir);
 			
 			archive(dataDirectory, toDir);
-			archive(new File(buildOutput, "data"), toDir);
+			archive(dataOutputDirectory, toDir);
 			
 			// TODO: Downloads?
 			

@@ -14,13 +14,13 @@ public abstract class AbstractConfiguredMojo extends AbstractMojo {
 	@Component
 	protected MavenProjectHelper projectHelper; 
 	
-	@Parameter(defaultValue = "${project.build.outputDirectory}", required = true)
-	protected File buildOutput;
+	@Parameter(defaultValue = "${project.build.outputDirectory}/data", required = true)
+	protected File dataOutputDirectory;
 
 	@Parameter(defaultValue = "${project.build.directory}/${project.build.finalName}.data.zip", property = "dataArchive", required = true)
 	protected File dataArchive;
 
-	@Parameter(defaultValue = "data", property = "dataDirectory", required = true)
+	@Parameter(defaultValue = "${basedir}/data", property = "dataDirectory", required = true)
 	protected File dataDirectory;
 
 	@Parameter(defaultValue = "data/${project.artifactId}", property = "targetPath", required = true)
