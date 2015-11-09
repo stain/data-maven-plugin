@@ -27,15 +27,22 @@ under the License.
 	<packaging>maven-plugin</packaging>
 
 	<name>Data Maven Plugin</name>
-
+	<url>https://github.com/stain/data-maven-plugin</url>
 	<inceptionYear>2015</inceptionYear>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
-
 	</properties>
+
+	<licenses>
+    <license>
+      <name>Apache License, version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
 	<dependencies>
 		<dependency>
@@ -100,6 +107,19 @@ under the License.
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>jar</goal>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -173,15 +193,29 @@ under the License.
 			</build>
 		</profile>
 	</profiles>
+	<!--
+
 	<repositories>
 		<repository>
-			<id>ops</id>
-			<name>Open PHACTS repository</name>
-			<url>http://repository.mygrid.org.uk/artifactory/ops/</url>
-			<releases />
-			<snapshots />
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>bintray-stain-maven</id>
+			<name>bintray</name>
+			<url>http://dl.bintray.com/stain/maven</url>
 		</repository>
 	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>bintray-stain-maven</id>
+			<name>bintray-plugins</name>
+			<url>http://dl.bintray.com/stain/maven</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	-->
 
 	<scm>
     <connection>scm:git:https://github.com/stain/data-maven-plugin.git</connection>
@@ -200,7 +234,7 @@ under the License.
       <organizationUrl>http://www.cs.manchester.ac.uk/our-research/activities/e-science/</organizationUrl>
     </developer>
   </developers>
-  
+
 
   <issueManagement>
     <system>GitHub</system>
