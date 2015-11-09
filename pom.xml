@@ -22,7 +22,7 @@ under the License.
 
 	<groupId>no.s11.dataplugin</groupId>
 	<artifactId>data-maven-plugin</artifactId>
-	<version>0.0.6</version>
+	<version>0.0.7-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>Data Maven Plugin</name>
@@ -251,7 +251,7 @@ under the License.
     <connection>scm:git:https://github.com/stain/data-maven-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:stain/data-maven-plugin.git</developerConnection>
     <url>https://github.com/stain/data-maven-plugin</url>
-    <tag>data-maven-plugin-0.0.6</tag>
+    <tag>HEAD</tag>
   </scm>
 
 
