@@ -245,7 +245,7 @@ under the License.
     <repository>
       <id>bintray-stain-data-maven-plugin</id>
       <name>bintray-stain-data-maven-plugin</name>
-      <url>https://api.bintray.com/maven/stain/maven/data-maven-plugin/;publish=1</url>
+      <url>https://api.bintray.com/maven/stain/maven/data-maven-plugin/</url>
     </repository>
   </distributionManagement>
 
