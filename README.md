@@ -52,15 +52,33 @@ to include `<packaging>` and `<plugin>` as below:
         <plugin>
           <groupId>no.s11.dataplugin</groupId>
         	<artifactId>data-maven-plugin</artifactId>
-        	<version>0.0.3-SNAPSHOT</version>
+        	<version>0.0.6</version>
           <extensions>true</extensions>
         </plugin>
       </plugins>
-    </build>  
+    </build>
+    <pluginRepositories>
+  		<pluginRepository>
+  			<id>bintray-stain-maven</id>
+  			<name>bintray-plugins</name>
+  			<url>http://dl.bintray.com/stain/maven</url>
+  			<snapshots>
+  				<enabled>false</enabled>
+  			</snapshots>
+  		</pluginRepository>
+  	</pluginRepositories>
 </project>
 ```
 
-Build the data project with `mvn clean package`, or install with `mvn clean install`, which will add the `data.zip`
+**Note**: The `<version>` in the example above might not be current, see the
+[latest release](https://github.com/stain/data-maven-plugin/releases) for the
+updated version number to use, or the `pom.xml` of the
+[data-maven-plugin source code source code](https://github.com/stain/data-maven-plugin/releases)
+if you are using a `-SNAPSHOT` build.
+
+
+Build the data project with `mvn clean package`, or
+install with `mvn clean install`, which will add the `data.zip`
 archive artifact to your local Maven repository.
 
 ## License
@@ -210,11 +228,11 @@ the properties you need to change.
 - `<targetPath>` is the folder path within the ZIP archive where data
    is stored, e.g. `data/example-data/`. Use `/` to add to the root.
 
-   
+
 ## Plugin development
 
 To run the [integration tests](src/it), run as
 
     mvn clean install -Pintegration
-    
+
 The generated test projects will be under `target/it`.
