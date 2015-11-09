@@ -103,7 +103,7 @@ under the License.
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
+				<!--This plugin's configuration is used to store Eclipse m2e settings
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -170,7 +170,6 @@ under the License.
 						</executions>
 					</plugin>
 				</plugins>
-
 			</build>
 		</profile>
 	</profiles>
@@ -184,17 +183,37 @@ under the License.
 		</repository>
 	</repositories>
 
-	<distributionManagement>
-		<repository>
-			<id>ops</id>
-			<name>Open PHACTS repository</name>
-			<url>http://repository.mygrid.org.uk/artifactory/ops/</url>
-		</repository>
-		<snapshotRepository>
-			<id>ops</id>
-			<name>Open PHACTS repository</name>
-			<url>http://repository.mygrid.org.uk/artifactory/ops/</url>
-		</snapshotRepository>
-	</distributionManagement>
+	<scm>
+    <connection>scm:git:https://github.com/stain/data-maven-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:stain/data-maven-plugin.git</developerConnection>
+    <url>https://github.com/stain/data-maven-plugin</url>
+    <tag>HEAD</tag>
+  </scm>
+
+
+	<developers>
+    <developer>
+      <name>Stian Soiland-Reyes</name>
+      <email>soiland-reyes@cs.manchester.ac.uk</email>
+      <url>http://orcid.org/0000-0001-9842-9718</url>
+      <organization>University of Manchester</organization>
+      <organizationUrl>http://www.cs.manchester.ac.uk/our-research/activities/e-science/</organizationUrl>
+    </developer>
+  </developers>
+  
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/stain/data-maven-plugin/issues</url>
+  </issueManagement>
+
+  <distributionManagement>
+    <repository>
+      <id>bintray-stain-data-maven-plugin</id>
+      <name>bintray-stain-data-maven-plugin</name>
+      <url>https://api.bintray.com/maven/stain/maven/data-maven-plugin</url>
+    </repository>
+  </distributionManagement>
+
 
 </project>
