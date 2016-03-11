@@ -138,6 +138,13 @@ on the project's classpath. You do not need to have the `data-maven-plugin`
 to use the artifacts, as the `.data.zip` files can be accessed as
 JARs.
 
+### From the command line
+
+```bash
+mvn dependency:get -DrepoUrl=http://data.openphacts.org/artifactory/data/ -DgroupId=org.openphacts.data  \
+   -DartifactId=ops-rsc-surechembl-linksets -Dversion=LATEST -Dpackaging=data.zip -Ddest=/tmp/$$.zip ;
+unzip /tmp/$$.zip ; rm /tmp/$$.zip
+```
 
 ## Extracting
 
@@ -145,6 +152,8 @@ As a ZIP file, you can extract the content of a `data.zip` file with regular
 decompression tools like [unzip](http://www.info-zip.org/UnZip.html),
 [jar](https://docs.oracle.com/javase/tutorial/deployment/jar/unpack.html) or
 [7-zip](http://www.7-zip.org/).
+
+
 
 ### Extracting on OS X
 
