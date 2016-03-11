@@ -140,7 +140,7 @@ JARs.
 
 ### From the command line
 
-```bash
+```
 mvn dependency:get -DrepoUrl=http://data.openphacts.org/artifactory/data/ -DgroupId=org.openphacts.data  \
    -DartifactId=ops-rsc-surechembl-linksets -Dversion=LATEST -Dpackaging=data.zip -Ddest=/tmp/$$.zip ;
 unzip /tmp/$$.zip ; rm /tmp/$$.zip
